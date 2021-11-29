@@ -1,0 +1,8 @@
+# Dependencies
+node_modules/
+
+# Project files
+.idea/
+
+# Build files
+dist/

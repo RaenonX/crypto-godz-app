@@ -1,0 +1,12 @@
+# Dependencies
+
+/node_modules/*
+
+# Build artifacts
+
+dist/*
+coverage/*
+
+# Type definitions
+
+**/*.d.ts
