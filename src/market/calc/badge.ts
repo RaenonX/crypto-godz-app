@@ -1,26 +1,30 @@
-import {permutation} from '../../utils';
+import {MarketCombinations} from '../combinations/market';
 import {BadgeOnMarket} from '../type';
 
 
-export const optimizedBadgeCostGodz = (listedBadges: BadgeOnMarket[], count: number): number => {
-  return permutation(listedBadges, count)
+type OptimizedBadgeComb = {
+  totalCostGodz: number,
+  combination: BadgeOnMarket[],
+};
+
+export const optimizedBadgeComb = (
+  badgeCombinations: MarketCombinations<BadgeOnMarket>,
+  sentzCount: number,
+): OptimizedBadgeComb => {
+  return badgeCombinations
     .filter((badgeComb) => {
-      const totalSentzCarryCount = badgeComb
-        .map((comb) => comb.sentzCarryCount)
+      const totalBadgeCarryCount = badgeComb
+        .map((comb) => comb.count * comb.sentzCarryCount)
         .reduce((prev, curr) => prev + curr);
 
-      return totalSentzCarryCount >= count;
+      return totalBadgeCarryCount >= sentzCount;
     })
-    .reduce((prev, curr) => {
-      const prevCost = prev
-        .map((comb) => comb.priceGodz)
-        .reduce((prev, curr) => prev + curr);
-      const currCost = prev
-        .map((comb) => comb.priceGodz)
-        .reduce((prev, curr) => prev + curr);
-
-      return prevCost > currCost ? prev : curr;
-    })
-    .map((badge) => badge.priceGodz)
-    .reduce((prev, curr) => prev + curr);
+    .mapNoNull((combination) => ({
+      totalCostGodz: combination
+        .map((comb) => comb.priceGodz * comb.count)
+        .reduce((prev, curr) => prev + curr),
+      combination,
+    }))
+    .takeAll()
+    .reduce((prev, curr) => prev.totalCostGodz < curr.totalCostGodz ? prev : curr);
 };

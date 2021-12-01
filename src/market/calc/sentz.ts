@@ -1,9 +1,9 @@
 import {getBestReward, RewardOutcome} from '../../data/rewards';
-import {permutation} from '../../utils';
+import {MarketCombinations} from '../combinations/market';
 import {SentzOnMarket} from '../type';
 
 
-type Solution = {
+export type Solution = {
   totalReturn: number,
   reward: RewardOutcome,
   expense: {
@@ -11,14 +11,14 @@ type Solution = {
     badge: number,
     vital: number,
   },
-  sentzCount: number,
+  sentzPicked: SentzOnMarket[],
 };
 
 type GetOptimizedSentzOptions = {
   badgeCostUsd: number,
   vitalCostUsd: number,
-  listedSentz: SentzOnMarket[],
-  count: number,
+  sentzCombinations: MarketCombinations<SentzOnMarket>,
+  sentzCount: number,
   days: number,
   godz: {
     price: number,
@@ -27,14 +27,19 @@ type GetOptimizedSentzOptions = {
 };
 
 export const optimizedSentzSelection = ({
-  badgeCostUsd, vitalCostUsd, listedSentz, count, days, godz,
-}: GetOptimizedSentzOptions): Solution => {
-  return permutation(listedSentz, count)
-    .map((sentzComb) => {
+  badgeCostUsd, vitalCostUsd, sentzCombinations, sentzCount, days, godz,
+}: GetOptimizedSentzOptions): Solution | null => {
+  const combinations = sentzCombinations
+    .mapNoNull((sentzComb) => {
       const sentzTotal = sentzComb.reduce((prev, curr) => ({
         willPower: prev.willPower + curr.willPower,
         priceGodz: prev.priceGodz + curr.priceGodz,
+        count: prev.count + curr.count,
       }));
+
+      if (sentzTotal.count !== sentzCount) {
+        return null;
+      }
 
       const reward = getBestReward(sentzTotal.willPower);
 
@@ -56,10 +61,16 @@ export const optimizedSentzSelection = ({
           badge,
           vital,
         },
-        sentzCount: count,
+        sentzPicked: sentzComb,
       };
     })
-    .filter((result): result is Solution => !!result)
+    .filterFalsy()
     .filter(({expense}) => expense.sentz + expense.badge + expense.vital < godz.owned)
-    .reduce((prev, curr) => prev.totalReturn > curr.totalReturn ? prev : curr);
+    .take();
+
+  if (!combinations.length) {
+    return null;
+  }
+
+  return combinations.reduce((prev, curr) => prev.totalReturn > curr.totalReturn ? prev : curr);
 };

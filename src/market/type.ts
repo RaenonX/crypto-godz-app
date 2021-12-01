@@ -1,5 +1,6 @@
-type ItemOnMarket = {
-  priceGodz: number
+export type ItemOnMarket = {
+  priceGodz: number,
+  count: number,
 };
 
 export type SentzOnMarket = ItemOnMarket & {

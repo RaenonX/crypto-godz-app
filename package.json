@@ -7,6 +7,7 @@
     "dev:single": "ts-node src/main.ts single",
     "dev:results": "ts-node src/main.ts results",
     "dev:market": "ts-node src/market/main.ts",
+    "dev:sandbox": "ts-node src/utils/iter.ts",
     "build": "tsc -p .",
     "lint": "eslint src/ --ext .ts,.tsx"
   },

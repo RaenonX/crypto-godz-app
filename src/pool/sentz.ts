@@ -1,6 +1,6 @@
 import {Sentz as SentzPool, SentzData} from '../data/sentz';
 import {Sentz} from '../types/sentz';
-import {getRandomRange} from '../utils';
+import {getRandomRange} from '../utils/misc';
 
 
 export const pullSingleSentz = (): Sentz => {

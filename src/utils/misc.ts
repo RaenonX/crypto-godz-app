@@ -1,5 +1,3 @@
-export const getRandomRange = (min: number, max: number): number => Math.random() * (max - min) + min;
-
 export const permutation = <T>(array: T[], size: number): T[][] => {
   const p = (t: T[], i: number) => {
     if (t.length === size) {
@@ -18,3 +16,5 @@ export const permutation = <T>(array: T[], size: number): T[][] => {
 
   return result;
 };
+
+export const getRandomRange = (min: number, max: number): number => Math.random() * (max - min) + min;
