@@ -1,3 +1,4 @@
+import {AccountStatus} from '../../types/account';
 import {sumAccumulator} from '../../utils/accumulator';
 import {Solution} from '../calc/type';
 
@@ -5,27 +6,27 @@ import {Solution} from '../calc/type';
 type ReportSolutionOptions = {
   solution: Solution,
   days: number,
-  godz: {
-    price: number,
-    owned: number
-  }
+  account: AccountStatus,
 };
 
-export const reportSolution = ({solution, days, godz}: ReportSolutionOptions): void => {
+export const reportSolution = ({solution, days, account}: ReportSolutionOptions): void => {
   const {reward} = solution;
+  const {sentz: sentzAsset} = account.assets;
 
   const totalSentzPower = solution.picked.sentz
     .map(({willPower, count}) => willPower * count)
-    .reduce(sumAccumulator);
+    .reduce(sumAccumulator) +
+    sentzAsset.map(({willPower}) => willPower).reduce(sumAccumulator);
   const totalSentzCount = solution.picked.sentz
     .map(({count}) => count)
-    .reduce(sumAccumulator);
+    .reduce(sumAccumulator) +
+    sentzAsset.length;
 
   console.log(`  Return after ${days} days: USD $${solution.totalReturnUsd.toFixed(2)}`);
   console.log();
   console.log(
     `  Initial Expense: USD $${solution.expenseUsd.total.toFixed(2)} ` +
-    `(${(solution.expenseUsd.total / godz.price).toFixed(2)} GODZ)`,
+    `(${(solution.expenseUsd.total / account.godz.price).toFixed(2)} GODZ)`,
   );
   console.log(`    Sentz Expense: USD $${solution.expenseUsd.sentz.toFixed(2)}`);
   console.log(`    Badge Expense: USD $${solution.expenseUsd.badge.toFixed(2)}`);
@@ -43,7 +44,7 @@ export const reportSolution = ({solution, days, godz}: ReportSolutionOptions): v
     .sort((a, b) => a.priceGodz - b.priceGodz)
     .forEach((sentz) => {
       const totalCostGodz = sentz.priceGodz * sentz.count;
-      const totalCostUsd = totalCostGodz * godz.price;
+      const totalCostUsd = totalCostGodz * account.godz.price;
 
       console.log(
         `WP ${sentz.willPower} x ${sentz.count.toString().padStart(2)} ` +
@@ -55,7 +56,7 @@ export const reportSolution = ({solution, days, godz}: ReportSolutionOptions): v
     .sort((a, b) => a.priceGodz - b.priceGodz)
     .forEach((badge) => {
       const totalCostGodz = badge.priceGodz * badge.count;
-      const totalCostUsd = totalCostGodz * godz.price;
+      const totalCostUsd = totalCostGodz * account.godz.price;
 
       console.log(
         `Carry ${badge.sentzCarryCount} x ${badge.count.toString().padStart(2)} ` +

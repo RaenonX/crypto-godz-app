@@ -1,3 +1,4 @@
+import {AccountStatus} from '../types/account';
 import {findSolution} from './solution/find';
 import {reportSolution} from './solution/report';
 import {BadgeOnMarket, SentzOnMarket} from './type';
@@ -5,9 +6,24 @@ import {BadgeOnMarket, SentzOnMarket} from './type';
 
 const usdToBnb = 620;
 
+const account: AccountStatus = {
+  godz: {
+    price: 6.2,
+    owned: 224.742,
+  },
+  assets: {
+    sentz: [
+      {willPower: 297, vitalDays: 0},
+      {willPower: 89, vitalDays: 0},
+      {willPower: 55, vitalDays: 0},
+    ],
+    badge: 0,
+  },
+};
+
 const godz = {
   price: 6.2,
-  owned: 2300 + 224.742,
+  owned: 224.742,
 };
 
 const bnbToGodz = usdToBnb / godz.price;
@@ -46,7 +62,7 @@ const days = 30;
 
 const main = () => {
   const solution = findSolution({
-    godz,
+    account,
     market: {
       badges: listedBadges,
       sentz: listedSentz,
@@ -62,7 +78,7 @@ const main = () => {
     return;
   }
 
-  reportSolution({solution, days, godz});
+  reportSolution({solution, days, account});
 };
 
 main();

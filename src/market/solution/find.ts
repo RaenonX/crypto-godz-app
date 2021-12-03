@@ -1,4 +1,5 @@
 import {getBestReward, Reward} from '../../data/rewards';
+import {AccountStatus} from '../../types/account';
 import {sumAccumulator} from '../../utils/accumulator';
 import {counterHighFirst} from '../../utils/iter';
 import {Solution} from '../calc/type';
@@ -8,10 +9,7 @@ import {CalculatedBadge, CalculatedSentz} from './type';
 
 
 type FindSolutionOptions = {
-  godz: {
-    owned: number,
-    price: number,
-  },
+  account: AccountStatus,
   market: {
     sentz: SentzOnMarket[],
     badges: BadgeOnMarket[],
@@ -23,12 +21,14 @@ type FindSolutionOptions = {
 };
 
 export const findSolution = ({
-  godz, market, params,
+  account, market, params,
 }: FindSolutionOptions): Solution | null => {
   const solutions: Solution[] = [];
 
   const {vitalCostUsd, days} = params;
   const {sentz, badges} = market;
+  const {godz} = account;
+  const {sentz: sentzInAccount, badge} = account.assets;
 
   const sentzOnMarket: CalculatedSentz[] = sentz
     .map((sentz) => ({item: sentz, wpPerGodz: sentz.willPower / sentz.priceGodz}))
@@ -52,7 +52,8 @@ export const findSolution = ({
 
   for (const rewardData of Reward) {
     for (const sentzCombo of sentzGen) {
-      const totalSentzPower = sentzCombo.map(({item}) => item.count * item.willPower).reduce(sumAccumulator);
+      const totalSentzPower = sentzCombo.map(({item}) => item.count * item.willPower).reduce(sumAccumulator) +
+        sentzInAccount.map((sentz) => sentz.willPower).reduce(sumAccumulator);
 
       if (totalSentzPower < rewardData.powerReq) {
         continue;
@@ -71,7 +72,7 @@ export const findSolution = ({
       for (const combo of generateBadgeGen()) {
         const totalBadgeCarryCount = combo
           .map(({item}) => item.sentzCarryCount * item.count)
-          .reduce(sumAccumulator);
+          .reduce(sumAccumulator) + badge;
 
         if (totalBadgeCarryCount < totalSentzCount) {
           continue;
