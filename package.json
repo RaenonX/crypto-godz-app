@@ -4,8 +4,7 @@
   "description": "App to simulate how likely to earn in CryptoGodz.",
   "main": "./dist/main.js",
   "scripts": {
-    "dev:market": "ts-node src/market/main.ts",
-    "dev:sandbox": "ts-node src/utils/iter.ts",
+    "dev:market": "ts-node scripts/marketComb.ts",
     "build": "tsc -p .",
     "lint": "eslint src/ --ext .ts,.tsx"
   },
