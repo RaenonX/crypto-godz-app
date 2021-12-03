@@ -1,12 +1,13 @@
-import {optimizedBadgeComb} from '../calc/badge';
-import {optimizedSentzSelection, Solution} from '../calc/sentz';
-import {MarketCombinations} from '../combinations/market';
+import {getBestReward, Reward} from '../../data/rewards';
+import {sumAccumulator} from '../../utils/accumulator';
+import {counterHighFirst} from '../../utils/iter';
+import {Solution} from '../calc/type';
 import {BadgeOnMarket, SentzOnMarket} from '../type';
+import {calculateSolution} from './calc';
+import {CalculatedBadge, CalculatedSentz} from './type';
 
 
 type FindSolutionOptions = {
-  minSentzCount: number,
-  maxSentzCount: number,
   godz: {
     owned: number,
     price: number,
@@ -22,37 +23,86 @@ type FindSolutionOptions = {
 };
 
 export const findSolution = ({
-  minSentzCount, maxSentzCount, godz, market, params,
+  godz, market, params,
 }: FindSolutionOptions): Solution | null => {
+  const solutions: Solution[] = [];
+
   const {vitalCostUsd, days} = params;
+  const {sentz, badges} = market;
 
-  const solutionsForEachCount = [...Array(maxSentzCount - minSentzCount + 1).keys()]
-    .map((num) => num + minSentzCount)
-    .map((sentzCount) => {
-      console.log();
-      console.log(`Exploring options with ${sentzCount} sentz...`);
+  const sentzOnMarket: CalculatedSentz[] = sentz
+    .map((sentz) => ({item: sentz, wpPerGodz: sentz.willPower / sentz.priceGodz}))
+    .sort(({wpPerGodz: wpPerGodzA}, {wpPerGodz: wpPerGodzB}) => wpPerGodzB - wpPerGodzA);
+  const badgesOnMarket: CalculatedBadge[] = badges
+    .map((badge) => ({item: badge, sentzPerGodz: badge.sentzCarryCount / badge.priceGodz}))
+    .sort(({sentzPerGodz: sentzPerGodzA}, {sentzPerGodz: sentzPerGodzB}) => sentzPerGodzB - sentzPerGodzA);
 
-      const badgeComb = optimizedBadgeComb(new MarketCombinations(market.badges, godz.owned), sentzCount);
-      const badgeCostUsd = badgeComb.totalCostGodz * godz.price;
+  const sentzGen = counterHighFirst({
+    sets: sentzOnMarket,
+    getElemMaxIdx: ({item}) => item.count,
+    transformElement: (elem, count) => ({...elem, item: {...elem.item, count}}),
+    maxCounterSum: 50,
+  });
+  const generateBadgeGen = () => counterHighFirst({
+    sets: badgesOnMarket,
+    getElemMaxIdx: ({item}) => item.count,
+    transformElement: (elem, count) => ({...elem, item: {...elem.item, count}}),
+    maxCounterSum: 10,
+  });
 
-      console.log(`Optimized badge cost ${badgeComb.totalCostGodz.toFixed(2)} GODZ ($${badgeCostUsd.toFixed(2)} USD)`);
-      console.log(badgeComb.combination);
+  for (const rewardData of Reward) {
+    for (const sentzCombo of sentzGen) {
+      const totalSentzPower = sentzCombo.map(({item}) => item.count * item.willPower).reduce(sumAccumulator);
 
-      return optimizedSentzSelection({
-        badgeCostUsd,
-        vitalCostUsd,
-        sentzCombinations: new MarketCombinations(market.sentz, godz.owned - badgeComb.totalCostGodz),
-        sentzCount,
+      if (totalSentzPower < rewardData.powerReq) {
+        continue;
+      }
+
+      const reward = getBestReward(totalSentzPower);
+
+      if (!reward) {
+        return null;
+      }
+
+      const totalSentzCount = sentzCombo.map(({item}) => item.count).reduce(sumAccumulator);
+
+      let badgeCombo;
+
+      for (const combo of generateBadgeGen()) {
+        const totalBadgeCarryCount = combo
+          .map(({item}) => item.sentzCarryCount * item.count)
+          .reduce(sumAccumulator);
+
+        if (totalBadgeCarryCount < totalSentzCount) {
+          continue;
+        }
+
+        badgeCombo = combo;
+        break;
+      }
+
+      if (!badgeCombo) {
+        continue;
+      }
+
+      const solution = calculateSolution({
+        combo: {
+          sentz: sentzCombo,
+          badge: badgeCombo,
+        },
+        reward,
         days,
-        godz,
+        vitalCostUsd,
+        godzPrice: godz.price,
       });
-    })
-    .filter((solution): solution is Solution => !!solution);
 
-  if (!solutionsForEachCount.length) {
-    return null;
+      solutions.push(solution);
+    }
   }
 
-  return solutionsForEachCount
-    .reduce((prev, curr) => prev.totalReturn > curr.totalReturn ? prev : curr);
+  const ownedUsd = godz.owned * godz.price;
+
+  return solutions
+    .filter((solution) => solution.expenseUsd.total <= ownedUsd)
+    .reduce((prev, curr) => prev.totalReturnUsd > curr.totalReturnUsd ? prev : curr);
 };
