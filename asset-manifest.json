@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/crypto-godz-app/static/css/main.ec49c266.chunk.css",
-    "main.js": "/crypto-godz-app/static/js/main.98e31ab6.chunk.js",
-    "main.js.map": "/crypto-godz-app/static/js/main.98e31ab6.chunk.js.map",
-    "runtime-main.js": "/crypto-godz-app/static/js/runtime-main.4444bdfa.js",
-    "runtime-main.js.map": "/crypto-godz-app/static/js/runtime-main.4444bdfa.js.map",
-    "static/js/2.978f4b57.chunk.js": "/crypto-godz-app/static/js/2.978f4b57.chunk.js",
-    "static/js/2.978f4b57.chunk.js.map": "/crypto-godz-app/static/js/2.978f4b57.chunk.js.map",
-    "static/js/3.8ef7ed35.chunk.js": "/crypto-godz-app/static/js/3.8ef7ed35.chunk.js",
-    "static/js/3.8ef7ed35.chunk.js.map": "/crypto-godz-app/static/js/3.8ef7ed35.chunk.js.map",
-    "index.html": "/crypto-godz-app/index.html",
-    "static/css/main.ec49c266.chunk.css.map": "/crypto-godz-app/static/css/main.ec49c266.chunk.css.map",
-    "static/js/2.978f4b57.chunk.js.LICENSE.txt": "/crypto-godz-app/static/js/2.978f4b57.chunk.js.LICENSE.txt"
+    "main.css": "/static/css/main.ec49c266.chunk.css",
+    "main.js": "/static/js/main.98e31ab6.chunk.js",
+    "main.js.map": "/static/js/main.98e31ab6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e5e6f6c5.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e5e6f6c5.js.map",
+    "static/js/2.978f4b57.chunk.js": "/static/js/2.978f4b57.chunk.js",
+    "static/js/2.978f4b57.chunk.js.map": "/static/js/2.978f4b57.chunk.js.map",
+    "static/js/3.8ef7ed35.chunk.js": "/static/js/3.8ef7ed35.chunk.js",
+    "static/js/3.8ef7ed35.chunk.js.map": "/static/js/3.8ef7ed35.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.ec49c266.chunk.css.map": "/static/css/main.ec49c266.chunk.css.map",
+    "static/js/2.978f4b57.chunk.js.LICENSE.txt": "/static/js/2.978f4b57.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.4444bdfa.js",
+    "static/js/runtime-main.e5e6f6c5.js",
     "static/js/2.978f4b57.chunk.js",
     "static/css/main.ec49c266.chunk.css",
     "static/js/main.98e31ab6.chunk.js"
