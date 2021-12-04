@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/crypto-godz-app/static/css/main.440e4c4d.chunk.css",
-    "main.js": "/crypto-godz-app/static/js/main.1b1e737a.chunk.js",
-    "main.js.map": "/crypto-godz-app/static/js/main.1b1e737a.chunk.js.map",
+    "main.css": "/crypto-godz-app/static/css/main.ec49c266.chunk.css",
+    "main.js": "/crypto-godz-app/static/js/main.98e31ab6.chunk.js",
+    "main.js.map": "/crypto-godz-app/static/js/main.98e31ab6.chunk.js.map",
     "runtime-main.js": "/crypto-godz-app/static/js/runtime-main.4444bdfa.js",
     "runtime-main.js.map": "/crypto-godz-app/static/js/runtime-main.4444bdfa.js.map",
-    "static/js/2.7ece1f84.chunk.js": "/crypto-godz-app/static/js/2.7ece1f84.chunk.js",
-    "static/js/2.7ece1f84.chunk.js.map": "/crypto-godz-app/static/js/2.7ece1f84.chunk.js.map",
+    "static/js/2.978f4b57.chunk.js": "/crypto-godz-app/static/js/2.978f4b57.chunk.js",
+    "static/js/2.978f4b57.chunk.js.map": "/crypto-godz-app/static/js/2.978f4b57.chunk.js.map",
     "static/js/3.8ef7ed35.chunk.js": "/crypto-godz-app/static/js/3.8ef7ed35.chunk.js",
     "static/js/3.8ef7ed35.chunk.js.map": "/crypto-godz-app/static/js/3.8ef7ed35.chunk.js.map",
     "index.html": "/crypto-godz-app/index.html",
-    "static/css/main.440e4c4d.chunk.css.map": "/crypto-godz-app/static/css/main.440e4c4d.chunk.css.map",
-    "static/js/2.7ece1f84.chunk.js.LICENSE.txt": "/crypto-godz-app/static/js/2.7ece1f84.chunk.js.LICENSE.txt"
+    "static/css/main.ec49c266.chunk.css.map": "/crypto-godz-app/static/css/main.ec49c266.chunk.css.map",
+    "static/js/2.978f4b57.chunk.js.LICENSE.txt": "/crypto-godz-app/static/js/2.978f4b57.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.4444bdfa.js",
-    "static/js/2.7ece1f84.chunk.js",
-    "static/css/main.440e4c4d.chunk.css",
-    "static/js/main.1b1e737a.chunk.js"
+    "static/js/2.978f4b57.chunk.js",
+    "static/css/main.ec49c266.chunk.css",
+    "static/js/main.98e31ab6.chunk.js"
   ]
 }
