@@ -1,0 +1,53 @@
+name: CI & CD
+
+on: [ push ]
+
+jobs:
+  deploy:
+    name: Deploy
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          # https://github.com/npm/cli/issues/564#issuecomment-743919613
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: npm ci
+        run: npm ci
+
+      - name: npm run lint
+        run: npm run lint
+
+      - name: npm run build
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: npm run deploy
+        run: npm run deploy
+        env:
+          NODE_ENV: production
