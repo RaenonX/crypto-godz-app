@@ -13,7 +13,7 @@ export const NumberInput = ({value, onChange, step}: Props) => {
   return (
     <FormControl
       type="number"
-      value={value}
+      value={Number(value).toString()}
       onChange={(e) => onChange(+e.target.value)}
       step={step}
     />

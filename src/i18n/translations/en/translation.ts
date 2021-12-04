@@ -14,7 +14,7 @@ export const translation: TranslationStruct = {
     badge: 'Total Badge Carry Count',
     godz: {
       title: 'GODZ',
-      price: 'Exchange Rate (USD)',
+      price: 'Price (USD)',
       owned: 'Owned',
     },
   },
