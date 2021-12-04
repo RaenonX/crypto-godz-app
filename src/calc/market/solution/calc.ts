@@ -1,5 +1,5 @@
+import {sumAccumulator} from '../../../utils/accumulator';
 import {RewardOutcome} from '../../data/rewards';
-import {sumAccumulator} from '../../utils/accumulator';
 import {Solution} from '../calc/type';
 import {getBreakEvenDays} from './breakEvenDays';
 import {CalculatedBadge, CalculatedSentz} from './type';

@@ -2,10 +2,11 @@ env:
   browser: true
   es6: true
   node: true
+  jest: true
 
 extends:
   - google
-  - plugin:@typescript-eslint/recommended
+  - plugin:react/recommended
   - plugin:eslint-plugin-import/errors
   - plugin:eslint-plugin-import/warnings
   - plugin:eslint-plugin-import/typescript
@@ -58,6 +59,12 @@ rules:
         - builtin
         - external
         - internal
+      pathGroups:
+        - pattern: react
+          group: external
+          position: before
+      pathGroupsExcludedImportTypes:
+        - react
       newlines-between: always
       alphabetize:
         order: asc

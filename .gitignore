@@ -6,3 +6,8 @@ node_modules/
 
 # Build files
 dist/
+build/
+
+# Others
+src/react-app-env.d.ts
+.wakatime-project

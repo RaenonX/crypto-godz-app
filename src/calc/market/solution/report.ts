@@ -1,5 +1,5 @@
+import {sumAccumulator} from '../../../utils/accumulator';
 import {AccountStatus} from '../../types/account';
-import {sumAccumulator} from '../../utils/accumulator';
 import {Solution} from '../calc/type';
 
 

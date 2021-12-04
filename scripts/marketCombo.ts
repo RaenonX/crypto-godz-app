@@ -1,7 +1,7 @@
-import {AccountStatus} from '../types/account';
-import {findSolution} from './solution/find';
-import {reportSolution} from './solution/report';
-import {BadgeOnMarket, SentzOnMarket} from './type';
+import {findSolution} from '../src/calc/market/solution/find';
+import {reportSolution} from '../src/calc/market/solution/report';
+import {BadgeOnMarket, SentzOnMarket} from '../src/calc/market/type';
+import {AccountStatus} from '../src/calc/types/account';
 
 
 const usdToBnb = 620;
@@ -21,12 +21,7 @@ const account: AccountStatus = {
   },
 };
 
-const godz = {
-  price: 6.2,
-  owned: 224.742,
-};
-
-const bnbToGodz = usdToBnb / godz.price;
+const bnbToGodz = usdToBnb / account.godz.price;
 
 const listedSentz: SentzOnMarket[] = [
   {willPower: 60, priceGodz: 0.015 * bnbToGodz, count: 10},
@@ -59,18 +54,15 @@ const vitalCostUsd = 22 / 30;
 
 const days = 30;
 
-
-const main = () => {
+const main = (): void => {
   const solution = findSolution({
     account,
     market: {
-      badges: listedBadges,
+      badge: listedBadges,
       sentz: listedSentz,
     },
-    params: {
-      vitalCostUsd,
-      days,
-    },
+    vitalCostUsd,
+    days,
   });
 
   if (!solution) {

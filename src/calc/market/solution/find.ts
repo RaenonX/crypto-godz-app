@@ -1,39 +1,23 @@
+import {MarketOptimizingParams} from '../../../components/page/market/type';
+import {sumAccumulator} from '../../../utils/accumulator';
+import {counterHighFirst} from '../../../utils/iter';
 import {getBestReward, Reward} from '../../data/rewards';
-import {AccountStatus} from '../../types/account';
-import {sumAccumulator} from '../../utils/accumulator';
-import {counterHighFirst} from '../../utils/iter';
 import {Solution} from '../calc/type';
-import {BadgeOnMarket, SentzOnMarket} from '../type';
 import {calculateSolution} from './calc';
 import {CalculatedBadge, CalculatedSentz} from './type';
 
 
-type FindSolutionOptions = {
-  account: AccountStatus,
-  market: {
-    sentz: SentzOnMarket[],
-    badges: BadgeOnMarket[],
-  },
-  params: {
-    days: number,
-    vitalCostUsd: number,
-  }
-};
-
-export const findSolution = ({
-  account, market, params,
-}: FindSolutionOptions): Solution | null => {
+export const findSolution = ({account, market, vitalCostUsd, days}: MarketOptimizingParams): Solution | null => {
   const solutions: Solution[] = [];
 
-  const {vitalCostUsd, days} = params;
-  const {sentz, badges} = market;
+  const {sentz, badge} = market;
   const {godz} = account;
-  const {sentz: sentzInAccount, badge} = account.assets;
+  const {sentz: sentzInAccount, badge: badgeInAccount} = account.assets;
 
   const sentzOnMarket: CalculatedSentz[] = sentz
     .map((sentz) => ({item: sentz, wpPerGodz: sentz.willPower / sentz.priceGodz}))
     .sort(({wpPerGodz: wpPerGodzA}, {wpPerGodz: wpPerGodzB}) => wpPerGodzB - wpPerGodzA);
-  const badgesOnMarket: CalculatedBadge[] = badges
+  const badgesOnMarket: CalculatedBadge[] = badge
     .map((badge) => ({item: badge, sentzPerGodz: badge.sentzCarryCount / badge.priceGodz}))
     .sort(({sentzPerGodz: sentzPerGodzA}, {sentzPerGodz: sentzPerGodzB}) => sentzPerGodzB - sentzPerGodzA);
 
@@ -52,8 +36,15 @@ export const findSolution = ({
 
   for (const rewardData of Reward) {
     for (const sentzCombo of sentzGen) {
-      const totalSentzPower = sentzCombo.map(({item}) => item.count * item.willPower).reduce(sumAccumulator) +
-        sentzInAccount.map((sentz) => sentz.willPower).reduce(sumAccumulator);
+      if (!sentzCombo.length) {
+        continue;
+      }
+
+      let totalSentzPower = sentzCombo.map(({item}) => item.count * item.willPower).reduce(sumAccumulator);
+
+      if (sentzInAccount.length) {
+        totalSentzPower += sentzInAccount.map((sentz) => sentz.willPower).reduce(sumAccumulator);
+      }
 
       if (totalSentzPower < rewardData.powerReq) {
         continue;
@@ -72,7 +63,7 @@ export const findSolution = ({
       for (const combo of generateBadgeGen()) {
         const totalBadgeCarryCount = combo
           .map(({item}) => item.sentzCarryCount * item.count)
-          .reduce(sumAccumulator) + badge;
+          .reduce(sumAccumulator) + badgeInAccount;
 
         if (totalBadgeCarryCount < totalSentzCount) {
           continue;
@@ -103,7 +94,13 @@ export const findSolution = ({
 
   const ownedUsd = godz.owned * godz.price;
 
-  return solutions
-    .filter((solution) => solution.expenseUsd.total <= ownedUsd)
+  const validSolutions = solutions
+    .filter((solution) => solution.expenseUsd.total <= ownedUsd);
+
+  if (!validSolutions.length) {
+    return null;
+  }
+
+  return validSolutions
     .reduce((prev, curr) => prev.totalReturnUsd > curr.totalReturnUsd ? prev : curr);
 };
