@@ -26,6 +26,7 @@ export const GodzAsset = ({account, setAccount}: AssetProps) => {
             <NumberInput
               value={account.godz.price}
               onChange={(price) => setAccount({...account, godz: {...account.godz, price}})}
+              step={0.1}
             />
           </InputGroup>
         </Col>
