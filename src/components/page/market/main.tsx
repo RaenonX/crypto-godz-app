@@ -1,7 +1,10 @@
 import React from 'react';
 
+import {Alert} from 'react-bootstrap';
+
 import {Solution} from '../../../calc/market/calc/type';
 import {findSolution} from '../../../calc/market/solution/find';
+import {useI18n} from '../../../i18n/hook';
 import {CookiesKeys} from '../../../utils/cookies/keys';
 import {MarketOptimizerInput} from './section/in';
 import {MarketOptimizerOutput} from './section/out';
@@ -9,6 +12,8 @@ import {MarketOptimizingParams} from './type';
 
 
 export const MarketOptimizer = () => {
+  const {t} = useI18n();
+
   const [optimizeParams, setOptimizeParams] = React.useState<MarketOptimizingParams>();
   const [solution, setSolution] = React.useState<Solution | undefined | null>();
   const ref = React.useRef<HTMLHRElement | null>(null);
@@ -57,6 +62,9 @@ export const MarketOptimizer = () => {
 
   return (
     <>
+      <Alert>
+        {t((t) => t.misc.donate)}
+      </Alert>
       <MarketOptimizerInput
         optimizeParams={optimizeParams}
         setOptimizeParams={setOptimizeParams}

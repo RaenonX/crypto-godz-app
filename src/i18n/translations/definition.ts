@@ -66,5 +66,6 @@ export type TranslationStruct = {
   },
   misc: {
     showCollapse: string,
+    donate: string,
   },
 };

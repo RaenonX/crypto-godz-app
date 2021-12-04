@@ -69,5 +69,6 @@ export const translation: TranslationStruct = {
   },
   misc: {
     showCollapse: '展開 / 摺疊',
+    donate: '歡迎捐款至 0xAD8e42dE98A2A8041be61A51D1a611Be662c5dB0 (BSC/ETH)！',
   },
 };
