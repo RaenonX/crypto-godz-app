@@ -24,6 +24,10 @@ parserOptions:
 plugins:
   - "@typescript-eslint"
 
+settings:
+  react:
+    version: detect
+
 rules:
   "@typescript-eslint/no-unused-vars":
     - error
@@ -40,7 +44,7 @@ rules:
 
   linebreak-style:
     - error
-    - unix
+    - windows
 
   "@typescript-eslint/indent":
     - error
