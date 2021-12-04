@@ -69,6 +69,9 @@ export const translation: TranslationStruct = {
   },
   misc: {
     showCollapse: '展開 / 摺疊',
+  },
+  alert: {
     donate: '歡迎捐款至 0xAD8e42dE98A2A8041be61A51D1a611Be662c5dB0 (BSC/ETH)！',
+    dataSaved: '所有輸入的資訊都會存到瀏覽器的儲存空間。這些資料並 *不會* 上傳到任何地方。',
   },
 };

@@ -69,6 +69,9 @@ export const translation: TranslationStruct = {
   },
   misc: {
     showCollapse: 'Show / Collapse',
-    donate: 'Feel free to donate to 0xAD8e42dE98A2A8041be61A51D1a611Be662c5dB0 (BSC/ETH)！',
+  },
+  alert: {
+    donate: 'Feel free to donate to 0xAD8e42dE98A2A8041be61A51D1a611Be662c5dB0 (BSC/ETH)!',
+    dataSaved: 'All inputs will be automatically saved locally. These data are NOT uploaded to anywhere.',
   },
 };

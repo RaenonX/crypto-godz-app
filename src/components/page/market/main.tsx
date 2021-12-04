@@ -6,6 +6,7 @@ import {Solution} from '../../../calc/market/calc/type';
 import {findSolution} from '../../../calc/market/solution/find';
 import {useI18n} from '../../../i18n/hook';
 import {CookiesKeys} from '../../../utils/cookies/keys';
+import {AdsUnit} from '../../elements/ads/main';
 import {MarketOptimizerInput} from './section/in';
 import {MarketOptimizerOutput} from './section/out';
 import {MarketOptimizingParams} from './type';
@@ -63,15 +64,21 @@ export const MarketOptimizer = () => {
   return (
     <>
       <Alert>
-        {t((t) => t.misc.donate)}
+        {t((t) => t.alert.donate)}
       </Alert>
+      <Alert variant="secondary">
+        {t((t) => t.alert.dataSaved)}
+      </Alert>
+      <AdsUnit/>
       <MarketOptimizerInput
         optimizeParams={optimizeParams}
         setOptimizeParams={setOptimizeParams}
         onPerformCalc={() => setSolution(findSolution(optimizeParams))}
       />
       <hr ref={ref}/>
+      <AdsUnit/>
       <MarketOptimizerOutput solution={solution} params={optimizeParams}/>
+      <AdsUnit/>
     </>
   );
 };
