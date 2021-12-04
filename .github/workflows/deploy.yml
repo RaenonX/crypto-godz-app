@@ -36,18 +36,19 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: npm ci
+      - name: Install dependencies
         run: npm ci
 
-      - name: npm run lint
+      - name: Lint
         run: npm run lint
 
-      - name: npm run build
+      - name: Build
         run: npm run build
         env:
           NODE_ENV: production
 
-      - name: npm run deploy
-        run: npm run deploy
-        env:
-          NODE_ENV: production
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
