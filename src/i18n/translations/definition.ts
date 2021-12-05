@@ -12,6 +12,7 @@ export type TranslationStruct = {
     godz: {
       title: string,
       price: string,
+      priceBnbToUsd: string,
       owned: string,
     },
   },

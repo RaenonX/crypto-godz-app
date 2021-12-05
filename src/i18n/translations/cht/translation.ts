@@ -15,6 +15,7 @@ export const translation: TranslationStruct = {
     godz: {
       title: 'GODZ',
       price: '匯率 (USD)',
+      priceBnbToUsd: '匯率 (USD/BNB)',
       owned: '擁有',
     },
   },

@@ -6,6 +6,7 @@ import {Solution} from '../../../calc/market/calc/type';
 import {findSolution} from '../../../calc/market/solution/find';
 import {useI18n} from '../../../i18n/hook';
 import {CookiesKeys} from '../../../utils/cookies/keys';
+import {overrideObject} from '../../../utils/override';
 import {AdsUnit} from '../../elements/ads/main';
 import {MarketOptimizerInput} from './section/in';
 import {MarketOptimizerOutput} from './section/out';
@@ -32,10 +33,10 @@ export const MarketOptimizer = () => {
   React.useEffect(() => {
     const paramsFromCookies = localStorage.getItem(CookiesKeys.MARKET_OPTIMIZER);
 
-    if (!paramsFromCookies) {
-      setOptimizeParams({
+    setOptimizeParams(overrideObject<MarketOptimizingParams>(
+      {
         account: {
-          godz: {owned: 100, price: 6.2},
+          godz: {owned: 100, price: 6.2, priceBnbToUsd: 620},
           assets: {
             sentz: [],
             badge: 0,
@@ -51,10 +52,9 @@ export const MarketOptimizer = () => {
         },
         vitalCostUsd: 0.733,
         days: 30,
-      });
-    } else {
-      setOptimizeParams(JSON.parse(paramsFromCookies));
-    }
+      },
+      paramsFromCookies ? JSON.parse(paramsFromCookies) : {},
+    ));
   }, []);
 
   if (!optimizeParams) {

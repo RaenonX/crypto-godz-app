@@ -25,7 +25,7 @@ export const MarketOptimizingParamsInput = ({params, setParams}: Props) => {
         </Col>
       </Row>
       <Row className="gx-2">
-        <Col md={8}>
+        <Col lg={8}>
           <InputGroup className="mb-3">
             <InputGroup.Text>{t((t) => t.market.param.vitalCostUsd)}</InputGroup.Text>
             <NumberInput
@@ -35,7 +35,7 @@ export const MarketOptimizingParamsInput = ({params, setParams}: Props) => {
             />
           </InputGroup>
         </Col>
-        <Col md={4}>
+        <Col lg={4}>
           <InputGroup className="mb-3">
             <InputGroup.Text>{t((t) => t.market.param.days)}</InputGroup.Text>
             <NumberInput

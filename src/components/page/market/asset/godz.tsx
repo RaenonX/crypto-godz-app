@@ -20,7 +20,17 @@ export const GodzAsset = ({account, setAccount}: AssetProps) => {
         </Col>
       </Row>
       <Row className="gx-2">
-        <Col md={6}>
+        <Col lg>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>{t((t) => t.asset.godz.priceBnbToUsd)}</InputGroup.Text>
+            <NumberInput
+              value={account.godz.priceBnbToUsd}
+              onChange={(priceBnbToUsd) => setAccount({...account, godz: {...account.godz, priceBnbToUsd}})}
+              step={0.01}
+            />
+          </InputGroup>
+        </Col>
+        <Col lg>
           <InputGroup className="mb-3">
             <InputGroup.Text>{t((t) => t.asset.godz.price)}</InputGroup.Text>
             <NumberInput
@@ -30,7 +40,7 @@ export const GodzAsset = ({account, setAccount}: AssetProps) => {
             />
           </InputGroup>
         </Col>
-        <Col md={6}>
+        <Col lg>
           <InputGroup className="mb-3">
             <InputGroup.Text>{t((t) => t.asset.godz.owned)}</InputGroup.Text>
             <NumberInput
